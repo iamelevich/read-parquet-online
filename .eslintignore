@@ -1,0 +1,4 @@
+!.cloudformation
+/node_modules/
+/coverage/
+/**/jmeter/
