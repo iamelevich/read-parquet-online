@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container fluid="true">
     <!-- Styled -->
     <b-form-file
         v-model="file"

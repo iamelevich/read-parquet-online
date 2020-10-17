@@ -1,0 +1,7 @@
+version: "3"
+services:
+  read-parquet-online:
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: "local"
