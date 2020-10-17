@@ -7,12 +7,20 @@ import Joi from 'joi';
 import { config } from './config';
 import { features } from "./features";
 import { version } from "../package.json";
+import { join } from 'path';
 
 async function start () {
+    const srcPath = __dirname.replace(/dist\/src/, 'src');
+
     // Create a server with a host and port
     let server = Hapi.server({
         host: config.get('host') as string,
         port: config.get('port') as number,
+        routes: {
+            files: {
+                relativeTo: join(srcPath, '..', 'client', 'dist'),
+            }
+        }
     });
     server.validator(Joi);
 
@@ -40,6 +48,33 @@ async function start () {
     await server.register({
         plugin: HapiSwagger,
         options: swaggerOptions
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/',
+        handler: function (request, h) {
+            return h.view('index');
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/{param*}',
+        handler: {
+            directory: {
+                path: '.',
+                redirectToSlash: true
+            }
+        }
+    });
+
+    server.views({
+        engines: {
+            html: require('handlebars')
+        },
+        relativeTo: __dirname.replace(/dist\/src/, 'src'),
+        path: join('..', 'client', 'dist'),
     });
 
     await server.start()
