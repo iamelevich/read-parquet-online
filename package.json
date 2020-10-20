@@ -5,12 +5,17 @@
   "main": "dist/build/index.js",
   "typings": "dist/types",
   "scripts": {
-    "start-dev": "node -r ts-node/register src/index.ts",
+    "start-dev": "build-client-dev && node -r ts-node/register src/index.ts",
     "build": "tsc",
-    "build-all": "npm run build && cd client && npm run build && cd ..",
-    "lint": "eslint --ext ts src/**  __tests__/unit/** __tests__/util/**",
+    "build-client": "cd client && npm run build && cd ..",
+    "build-client-dev": "cd client && npm run build-dev && cd ..",
+    "build-all": "npm run build && npm run build-client",
+    "build-all-dev": "npm run build && build-client-dev",
+    "lint-client": "cd client && npm run lint && cd ..",
+    "lint": "eslint --ext ts src/**  __tests__/unit/**",
+    "lint-all": "npm run lint && npm run lint-client",
     "test": "jest --runInBand --detectOpenHandles",
-    "start": "npm run build && node dist/src/index.js",
+    "start": "npm run build-all && node dist/src/index.js",
     "docker:build": "DOCKER_BUILDKIT=1 docker build -f Dockerfile -t ${npm_package_name} --build-arg GIT_HASH=$(git rev-parse HEAD) --build-arg GIT_REF=$(git branch | grep \\* | cut -d ' ' -f2) --build-arg GIT_URL=$(git config --get remote.origin.url) .",
     "docker:start": "docker-compose -f docker-compose.yml up -d",
     "docker:stop": "docker-compose -f docker-compose.yml down",
@@ -50,12 +55,16 @@
     "@types/lodash": "^4.14.162",
     "@types/node": "^14.11.10",
     "@types/parquetjs": "^0.10.2",
+    "@types/stream-to-promise": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
     "eslint": "^7.11.0",
+    "form-data": "^3.0.0",
     "husky": "^4.3.0",
     "jest": "^26.5.3",
     "source-map-support": "^0.5.19",
+    "stream-to-promise": "^3.0.0",
+    "ts-jest": "^26.4.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   },
@@ -82,6 +91,11 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "<rootDir>/src/**/*"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/config.ts",
+      "<rootDir>/src/index.ts",
+      "<rootDir>/node_modules/"
     ],
     "coverageThreshold": {
       "global": {
@@ -140,8 +154,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run build",
-      "pre-push": "npm run lint && npm run build && npm run test"
+      "pre-commit": "npm run lint-all && npm run build-all",
+      "pre-push": "npm run lint-all && npm run build-all && npm run test"
     }
   },
   "files": [
