@@ -15,6 +15,8 @@ import { join } from 'path';
  */
 async function init(): Promise<Server> {
     const srcPath = __dirname.replace(/dist\/src/, 'src');
+    const clientPart = join('..', '..', 'client', 'dist')
+    const clientPath = join(srcPath, clientPart);
 
     // Create a server with a host and port
     let server = Hapi.server({
@@ -22,7 +24,7 @@ async function init(): Promise<Server> {
         port: config.get('port') as number,
         routes: {
             files: {
-                relativeTo: join(srcPath, '..', 'client', 'dist'),
+                relativeTo: clientPath,
             }
         }
     });
@@ -77,8 +79,8 @@ async function init(): Promise<Server> {
         engines: {
             html: require('handlebars')
         },
-        relativeTo: __dirname.replace(/dist\/src/, 'src'),
-        path: join('..', 'client', 'dist'),
+        relativeTo: srcPath,
+        path: clientPart,
     });
 
     await server.start()

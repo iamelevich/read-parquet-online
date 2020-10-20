@@ -8,7 +8,16 @@
         drop-placeholder="Drop file here..."
     ></b-form-file>
     <b-button @click="parseFile" v-show="file !== null" class="mr-2">Parse file: {{ file ? file.name : '' }}</b-button>
-    <b-table ref="data_table" striped hover :items="items" :fields="fields"></b-table>
+    <b-table ref="data_table"
+             :striped="true"
+             :hover="true"
+             :bordered="true"
+             :small="true"
+             :responsive="true"
+             sticky-header="calc(100vh - 200px)"
+             :items="items"
+             :fields="fields"
+    ></b-table>
 
     <!-- Info modal -->
     <b-modal :id="errorModal.id" :title="errorModal.title" ok-only @hide="resetErrorModal">
