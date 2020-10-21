@@ -3,6 +3,9 @@
     <md-app>
       <md-app-toolbar class="md-primary" md-elevation="1">
         <h1 class="md-title" style="flex: 1">Apache Parquet Online Viewer</h1>
+        <div class="md-toolbar-section-end">
+          <Download v-bind:parquet="parquet" />
+        </div>
       </md-app-toolbar>
       <md-app-content>
         <File @parsed-parquet="parquet = $event" />
@@ -15,6 +18,7 @@
 <script>
 import File from "./components/File.vue";
 import Table from "./components/Table.vue";
+import Download from "./components/Download.vue";
 
 export default {
   name: "App",
@@ -25,7 +29,8 @@ export default {
   },
   components: {
     File,
-    Table
+    Table,
+    Download,
   }
 };
 </script>
