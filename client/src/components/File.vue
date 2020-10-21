@@ -1,29 +1,20 @@
 <template>
-  <b-container fluid="true">
-    <!-- Styled -->
-    <b-form-file
-        v-model="file"
-        :state="Boolean(file)"
-        placeholder="Choose a file or drop it here..."
-        drop-placeholder="Drop file here..."
-    ></b-form-file>
-    <b-button @click="parseFile" v-show="file !== null" class="mr-2">Parse file: {{ file ? file.name : '' }}</b-button>
-    <b-table ref="data_table"
-             :striped="true"
-             :hover="true"
-             :bordered="true"
-             :small="true"
-             :responsive="true"
-             sticky-header="calc(100vh - 200px)"
-             :items="items"
-             :fields="fields"
-    ></b-table>
-
-    <!-- Info modal -->
-    <b-modal :id="errorModal.id" :title="errorModal.title" ok-only @hide="resetErrorModal">
-      <pre>{{ errorModal.content }}</pre>
-    </b-modal>
-  </b-container>
+  <div v-show="showFile">
+    <md-field v-show="file === null">
+      <label>Upload parquet file</label>
+      <md-file
+          v-model="file"
+          @md-change="fileChanged($event)"
+          placeholder="Add parquet file" />
+    </md-field>
+    <md-progress-bar
+        v-show="file != null"
+        md-mode="query" />
+    <md-dialog-alert
+        :md-active.sync="errorModal.show"
+        :md-title="errorModal.title"
+        :md-content="errorModal.content" />
+  </div>
 </template>
 
 <script>
@@ -31,33 +22,20 @@ export default {
   name: "File",
   data() {
     return {
+      showFile: true,
       file: null,
-      error_message: null,
-      items: [],
-      fields: [],
       errorModal: {
-        id: 'error-modal',
+        show: false,
         title: '',
         content: ''
       }
     }
   },
   methods: {
-    error(title, text) {
-      this.errorModal.title = title;
-      this.errorModal.content = text;
-      this.$root.$emit('bv::show::modal', this.errorModal.id);
-    },
-    resetErrorModal() {
-      this.errorModal.title = '';
-      this.errorModal.content = '';
-    },
-    async parseFile() {
-      this.error_message = null;
-      this.items = [];
-      this.fields = [];
+    async fileChanged(files) {
+      const file = files[0];
       const formData = new FormData();
-      formData.append('file', this.file);
+      formData.append('file', file);
 
       const res = await fetch('/v1/parquet', {
         method: 'POST',
@@ -65,20 +43,25 @@ export default {
       });
       const json = await res.json();
       if (res.status === 200) {
-        this.items = json.data.map((val, index) => {
-          val.index = index+1;
-          return val;
-        });
-        this.fields = ['index'].concat(Object.keys(json.schema));
+        this.$emit('parsed-parquet', json);
+        this.showFile = false;
       } else {
         this.error(json.error, json.message);
         this.file = null;
+        this.$emit('parsed-parquet', null);
       }
-    }
+    },
+    error(title, text) {
+      this.errorModal.title = title;
+      this.errorModal.content = text;
+      this.errorModal.show = true;
+    },
   }
 }
 </script>
 
 <style scoped>
-
+.md-progress-bar {
+  margin: 24px;
+}
 </style>
