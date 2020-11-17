@@ -2,7 +2,7 @@
   <div id="page-container">
     <md-app>
       <md-app-toolbar class="md-primary" md-elevation="1">
-        <h1 class="md-title" style="flex: 1">Apache Parquet Online Viewer</h1>
+        <h1 class="md-title" style="flex: 1">Apache Parquet Online Viewer (client: {{ version }}, server: {{ server_version }})</h1>
         <div class="md-toolbar-section-end">
           <Download v-bind:parquet="parquet" />
         </div>
@@ -25,6 +25,8 @@ export default {
   data() {
     return {
       parquet: null,
+      version: process.env.VUE_APP_VERSION,
+      server_version: process.env.VUE_APP_SERVER_VERSION,
     }
   },
   components: {
