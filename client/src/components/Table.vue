@@ -79,5 +79,7 @@ export default {
 </script>
 
 <style scoped>
-
+.md-table-pagination {
+  justify-content: flex-start;
+}
 </style>
