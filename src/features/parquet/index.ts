@@ -19,7 +19,7 @@ export default async function (server: Server): Promise<void> {
                 schema: Validator.parquetResponse,
             },
             payload: {
-                maxBytes: 10485760,
+                maxBytes: 26214400,
                 parse: true,
                 output: 'file',
                 multipart: {
