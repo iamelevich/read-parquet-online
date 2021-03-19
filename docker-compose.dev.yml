@@ -1,6 +1,7 @@
 version: "3"
 services:
   read-parquet-online:
+    image: read-parquet-online:latest
     ports:
       - "3000:3000"
     environment:
