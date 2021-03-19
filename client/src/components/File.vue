@@ -5,7 +5,7 @@
       <md-file
           v-model="file"
           @md-change="fileChanged($event)"
-          placeholder="Add parquet file" />
+          placeholder="Add parquet file (Up to 25MB)" />
     </md-field>
     <md-progress-bar
         v-show="file != null"
