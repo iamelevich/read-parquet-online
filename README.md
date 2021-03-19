@@ -10,6 +10,19 @@ To run container from docker.hub
 docker run --name=read-parquet-online -p 127.0.0.1:3000:3000/tcp --env NODE_ENV=production -d beer13/read-parquet-online 
 ```
 
+## Run with docker-compose
+
+```yaml
+version: "3"
+services:
+  read-parquet-online:
+    image: beer13/read-parquet-online:latest
+    ports:
+      - "80:3000"
+    environment:
+      NODE_ENV: "production"
+```
+
 # Development
 
 ## Run in docker
