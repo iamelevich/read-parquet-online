@@ -1,6 +1,6 @@
 {
   "name": "read-parquet-online",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Online reader for Apache Parquet",
   "main": "dist/build/index.js",
   "typings": "dist/types",
