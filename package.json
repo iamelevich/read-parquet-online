@@ -1,6 +1,6 @@
 {
   "name": "read-parquet-online",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Online reader for Apache Parquet",
   "main": "dist/build/index.js",
   "typings": "dist/types",
@@ -16,11 +16,11 @@
     "lint-all": "npm run lint && npm run lint-client",
     "test": "jest --runInBand --detectOpenHandles",
     "start": "npm run build-all && node dist/src/index.js",
-    "docker:build": "DOCKER_BUILDKIT=1 docker build -f Dockerfile -t ${npm_package_name} --build-arg GIT_HASH=$(git rev-parse HEAD) --build-arg GIT_REF=$(git branch | grep \\* | cut -d ' ' -f2) --build-arg GIT_URL=$(git config --get remote.origin.url) .",
+    "docker:build": "DOCKER_BUILDKIT=1 docker build -f Dockerfile -t ${npm_package_name} --target release --build-arg GIT_HASH=$(git rev-parse HEAD) --build-arg GIT_REF=$(git branch | grep \\* | cut -d ' ' -f2) --build-arg GIT_URL=$(git config --get remote.origin.url) .",
     "docker:start": "docker-compose -f docker-compose.yml up -d",
     "docker:stop": "docker-compose -f docker-compose.yml down",
     "docker:tail": "docker-compose -f docker-compose.yml logs -f",
-    "docker:start-dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker:start-dev": "docker-compose -f docker-compose.dev.yml up",
     "docker:stop-dev": "docker-compose -f docker-compose.dev.yml down"
   },
   "git": {
@@ -44,7 +44,8 @@
     "hapi-swagger": "^14.0.0",
     "joi": "^17.2.1",
     "lodash": "^4.17.20",
-    "parquetjs": "^0.11.2"
+    "parquetjs": "^0.11.2",
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@types/conf": "^3.0.0",

@@ -7,7 +7,7 @@ You can test it [here](http://static.133.190.201.138.clients.your-server.de/)
 
 To run container from docker.hub
 ```bash
-docker run --name=read-parquet-online -p 127.0.0.1:3000:3000/tcp --env NODE_ENV=production -d beer13/read-parquet-online 
+docker run --name=read-parquet-online -p 80:3000 --env NODE_ENV=production -d beer13/read-parquet-online 
 ```
 
 ## Run with docker-compose
