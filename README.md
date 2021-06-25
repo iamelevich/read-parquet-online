@@ -1,5 +1,7 @@
 # Apache Parquet Online Viewer
 
+THIS IS DEPRICATED REPOSITORY. PLEASE USE [parquet-online-viewer](https://github.com/iamelevich/parquet-online-viewer) INSTEAD
+
 This is simple application to view Apache Parquet files. 
 You can test it [here](http://static.133.190.201.138.clients.your-server.de:3000/)
 
